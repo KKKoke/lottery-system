@@ -1,6 +1,8 @@
 package com.kkkoke.lottery.test;
 
 import com.alibaba.fastjson.JSON;
+import com.kkkoke.lottery.domain.strategy.model.req.DrawReq;
+import com.kkkoke.lottery.domain.strategy.service.draw.IDrawExec;
 import com.kkkoke.lottery.infrastructure.dao.IActivityDao;
 import com.kkkoke.lottery.infrastructure.po.Activity;
 import org.junit.Test;
@@ -27,6 +29,9 @@ public class ApiTest {
     @Resource
     IActivityDao activityDao;
 
+    @Resource
+    IDrawExec drawExec;
+
     @Test
     public void testInsert() {
         Activity activity = new Activity();
@@ -46,5 +51,10 @@ public class ApiTest {
     public void testSelect() {
         Activity activity = activityDao.queryActivityById(100002L);
         logger.info("测试结果：{}", JSON.toJSONString(activity));
+    }
+
+    @Test
+    public void testDrawExec() {
+        drawExec.doDrawExec(new DrawReq("keycheung", 10001L));
     }
 }
