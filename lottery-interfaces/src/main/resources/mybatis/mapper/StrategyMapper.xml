@@ -9,6 +9,13 @@
         WHERE strategy_id = #{strategyId}
     </select>
 
+    <insert id="insert" parameterType="com.kkkoke.lottery.infrastructure.po.Strategy">
+        INSERT INTO strategy(strategy_id, strategy_desc, strategy_mode, grant_type,
+                             grant_date, ext_info, create_time, update_time)
+        VALUES(#{strategyId}, #{strategyDesc}, #{strategyMode}, #{grantType},
+               #{grantDate}, #{extInfo}, NOW(), NOW())
+    </insert>
+
     <resultMap id="strategyMap" type="com.kkkoke.lottery.infrastructure.po.Strategy">
         <id column="id" property="id"/>
         <result column="strategy_id" property="strategyId"/>
