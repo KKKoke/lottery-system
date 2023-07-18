@@ -1,5 +1,8 @@
 package com.kkkoke.lottery.domain.activity.service.partake;
 
+import com.kkkoke.lottery.domain.activity.model.req.PartakeReq;
+import com.kkkoke.lottery.domain.activity.model.res.PartakeResult;
+
 /**
  * @author KeyCheung
  * @date 2023/07/14
@@ -8,7 +11,9 @@ package com.kkkoke.lottery.domain.activity.service.partake;
 public interface IActivityPartake {
 
     /**
-     * TODO：待开发活动参与接口
+     * 参与活动
+     * @param req 入参
+     * @return    领取结果
      */
-    void doPartake();
+    PartakeResult doPartake(PartakeReq req);
 }

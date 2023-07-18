@@ -4,11 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.kkkoke.lottery.common.Constants;
 import com.kkkoke.lottery.domain.activity.model.aggregates.ActivityConfigRich;
 import com.kkkoke.lottery.domain.activity.model.req.ActivityConfigReq;
+import com.kkkoke.lottery.domain.activity.model.req.PartakeReq;
+import com.kkkoke.lottery.domain.activity.model.res.PartakeResult;
 import com.kkkoke.lottery.domain.activity.model.vo.ActivityVO;
 import com.kkkoke.lottery.domain.activity.model.vo.AwardVO;
 import com.kkkoke.lottery.domain.activity.model.vo.StrategyDetailVO;
 import com.kkkoke.lottery.domain.activity.model.vo.StrategyVO;
 import com.kkkoke.lottery.domain.activity.service.deploy.IActivityDeploy;
+import com.kkkoke.lottery.domain.activity.service.partake.IActivityPartake;
 import com.kkkoke.lottery.domain.activity.service.stateflow.IStateHandler;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +43,9 @@ public class ActivityTest {
 
     @Resource
     private IStateHandler stateHandler;
+
+    @Resource
+    private IActivityPartake activityPartake;
 
     private ActivityConfigRich activityConfigRich;
 
@@ -160,15 +166,23 @@ public class ActivityTest {
     }
 
     @Test
-    public void test_createActivity() {
+    public void testCreateActivity() {
         activityDeploy.createActivity(new ActivityConfigReq(activityId, activityConfigRich));
     }
 
     @Test
-    public void test_alterState() {
+    public void testAlterState() {
         logger.info("提交审核，测试：{}", JSON.toJSONString(stateHandler.arraignment(100001L, Constants.ActivityState.EDIT)));
         logger.info("审核通过，测试：{}", JSON.toJSONString(stateHandler.checkPass(100001L, Constants.ActivityState.ARRAIGNMENT)));
         logger.info("运行活动，测试：{}", JSON.toJSONString(stateHandler.doing(100001L, Constants.ActivityState.PASS)));
         logger.info("二次提审，测试：{}", JSON.toJSONString(stateHandler.checkPass(100001L, Constants.ActivityState.EDIT)));
+    }
+
+    @Test
+    public void testActivityPartake() {
+        PartakeReq req = new PartakeReq("Uhdgkw766120d", 100001L);
+        PartakeResult res = activityPartake.doPartake(req);
+        logger.info("请求参数：{}", JSON.toJSONString(req));
+        logger.info("测试结果：{}", JSON.toJSONString(res));
     }
 }
