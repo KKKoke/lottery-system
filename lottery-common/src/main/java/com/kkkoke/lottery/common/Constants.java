@@ -17,7 +17,9 @@ public class Constants {
 
         INDEX_DUP("0003","主键冲突"),
 
-        NO_UPDATE("0004","SQL操作无更新");
+        NO_UPDATE("0004","SQL操作无更新"),
+
+        LOSING_DRAW("D001", "未中奖");
 
         private final String code;
 
@@ -44,22 +46,30 @@ public class Constants {
 
         /** 1：编辑 */
         EDIT(1, "编辑"),
+
         /** 2：提审 */
         ARRAIGNMENT(2, "提审"),
+
         /** 3：撤审 */
         REVOKE(3, "撤审"),
+
         /** 4：通过 */
         PASS(4, "通过"),
+
         /** 5：运行(活动中) */
         DOING(5, "运行(活动中)"),
+
         /** 6：拒绝 */
         REFUSE(6, "拒绝"),
+
         /** 7：关闭 */
         CLOSE(7, "关闭"),
+
         /** 8：开启 */
         OPEN(8, "开启");
 
         private Integer code;
+
         private String info;
 
         ActivityState(Integer code, String info) {
@@ -103,6 +113,7 @@ public class Constants {
         ENTIRETY(2, "总体概率");
 
         private Integer code;
+
         private String info;
 
         StrategyMode(Integer code, String info) {
@@ -131,6 +142,7 @@ public class Constants {
      * 中奖状态：0未中奖、1已中奖、2兜底奖
      */
     public enum DrawState {
+
         /**
          * 未中奖
          */
@@ -147,6 +159,7 @@ public class Constants {
         Cover(2,"兜底奖");
 
         private Integer code;
+
         private String info;
 
         DrawState(Integer code, String info) {
@@ -192,6 +205,7 @@ public class Constants {
         FAILURE(2, "发奖失败");
 
         private Integer code;
+
         private String info;
 
         AwardState(Integer code, String info) {
@@ -224,20 +238,24 @@ public class Constants {
          * 文字描述
          */
         DESC(1, "文字描述"),
+
         /**
          * 兑换码
          */
         RedeemCodeGoods(2, "兑换码"),
+
         /**
          * 优惠券
          */
         CouponGoods(3, "优惠券"),
+
         /**
          * 实物奖品
          */
         PhysicalGoods(4, "实物奖品");
 
         private Integer code;
+
         private String info;
 
         AwardType(Integer code, String info) {
@@ -270,13 +288,87 @@ public class Constants {
          * 雪花算法
          */
         SnowFlake,
+
         /**
          * 日期算法
          */
         ShortCode,
+
         /**
          * 随机算法
          */
         RandomNumeric;
+    }
+
+    /**
+     * 活动单使用状态 0未使用、1已使用
+     */
+    public enum TaskState {
+
+        NO_USED(0, "未使用"),
+
+        USED(1, "已使用");
+
+        private Integer code;
+
+        private String info;
+
+        TaskState(Integer code, String info) {
+            this.code = code;
+            this.info = info;
+        }
+
+        public Integer getCode() {
+            return code;
+        }
+
+        public void setCode(Integer code) {
+            this.code = code;
+        }
+
+        public String getInfo() {
+            return info;
+        }
+
+        public void setInfo(String info) {
+            this.info = info;
+        }
+    }
+
+    /**
+     * 发奖状态 0初始、1完成、2失败
+     */
+    public enum GrantState {
+
+        INIT(0, "初始"),
+
+        COMPLETE(1, "完成"),
+
+        FAIL(2, "失败");
+
+        private Integer code;
+
+        private String info;
+
+        GrantState(Integer code, String info) {
+            this.code = code;
+            this.info = info;
+        }
+
+        public Integer getCode() {
+            return code;
+        }
+
+        public void setCode(Integer code) {
+            this.code = code;
+        }
+
+        public String getInfo() {
+            return info;
+        }
+
+        public void setInfo(String info) {
+            this.info = info;
+        }
     }
 }
