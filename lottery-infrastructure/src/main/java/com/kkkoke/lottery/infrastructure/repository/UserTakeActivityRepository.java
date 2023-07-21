@@ -10,7 +10,7 @@ import com.kkkoke.lottery.infrastructure.dao.IUserTakeActivityDao;
 import com.kkkoke.lottery.infrastructure.po.UserStrategyExport;
 import com.kkkoke.lottery.infrastructure.po.UserTakeActivity;
 import com.kkkoke.lottery.infrastructure.po.UserTakeActivityCount;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -20,7 +20,7 @@ import java.util.Date;
  * @date 2023/07/18
  * @desc 用户参与活动仓储
  */
-@Component
+@Repository
 public class UserTakeActivityRepository implements IUserTakeActivityRepository {
 
     @Resource
