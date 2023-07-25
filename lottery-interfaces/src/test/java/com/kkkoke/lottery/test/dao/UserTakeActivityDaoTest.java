@@ -1,4 +1,4 @@
-package com.kkkoke.lottery.test;
+package com.kkkoke.lottery.test.dao;
 
 import com.kkkoke.lottery.infrastructure.dao.IUserTakeActivityDao;
 import com.kkkoke.lottery.infrastructure.po.UserTakeActivity;

@@ -9,7 +9,7 @@ import com.kkkoke.lottery.domain.award.service.goods.IDistributionGoods;
 import com.kkkoke.lottery.domain.strategy.model.req.DrawReq;
 import com.kkkoke.lottery.domain.strategy.model.res.DrawResult;
 import com.kkkoke.lottery.domain.strategy.model.vo.AwardRateInfo;
-import com.kkkoke.lottery.domain.strategy.model.vo.DrawAwardInfo;
+import com.kkkoke.lottery.domain.strategy.model.vo.DrawAwardVO;
 import com.kkkoke.lottery.domain.strategy.service.algorithm.IDrawAlgorithm;
 import com.kkkoke.lottery.domain.strategy.service.draw.IDrawExec;
 import com.kkkoke.lottery.infrastructure.dao.IActivityDao;
@@ -115,7 +115,7 @@ public class ApiTest {
         }
 
         // 封装发奖参数，orderId：2109313442431 为模拟ID，需要在用户参与领奖活动时生成
-        DrawAwardInfo drawAwardInfo = drawResult.getDrawAwardInfo();
+        DrawAwardVO drawAwardInfo = drawResult.getDrawAwardInfo();
         GoodsReq goodsReq = new GoodsReq(drawResult.getuId(), "2109313442431", drawAwardInfo.getAwardId(),
                 drawAwardInfo.getAwardName(), drawAwardInfo.getAwardContent());
 

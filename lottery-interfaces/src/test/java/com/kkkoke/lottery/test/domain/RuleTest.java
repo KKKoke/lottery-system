@@ -1,9 +1,10 @@
-package com.kkkoke.lottery.test;
+package com.kkkoke.lottery.test.domain;
 
 import com.alibaba.fastjson.JSON;
 import com.kkkoke.lottery.domain.rule.model.req.DecisionMatterReq;
 import com.kkkoke.lottery.domain.rule.model.res.EngineResult;
 import com.kkkoke.lottery.domain.rule.service.engine.EngineFilter;
+import com.kkkoke.lottery.test.domain.ActivityTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;

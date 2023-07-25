@@ -1,13 +1,24 @@
-package com.kkkoke.lottery.domain.strategy.model.vo;
+package com.kkkoke.lottery.rpc.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author KeyCheung
- * @date 2023/07/13
- * @desc 中奖奖品信息
+ * @date 2023/07/21
+ * @desc 奖品信息
  */
-public class DrawAwardInfo {
+public class AwardDTO implements Serializable {
+
+    /**
+     * 用户ID
+     */
+    private String userId;
+
+    /**
+     * 活动ID
+     */
+    private Long activityId;
 
     /**
      * 奖品ID
@@ -43,14 +54,20 @@ public class DrawAwardInfo {
      */
     private Date grantDate;
 
-    public DrawAwardInfo() {
+    public String getUserId() {
+        return userId;
     }
 
-    public DrawAwardInfo(String awardId, Integer awardType, String awardName,String awardContent) {
-        this.awardId = awardId;
-        this.awardType = awardType;
-        this.awardName = awardName;
-        this.awardContent = awardContent;
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public Long getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(Long activityId) {
+        this.activityId = activityId;
     }
 
     public String getAwardId() {
@@ -107,5 +124,20 @@ public class DrawAwardInfo {
 
     public void setGrantDate(Date grantDate) {
         this.grantDate = grantDate;
+    }
+
+    @Override
+    public String toString() {
+        return "AwardDTO{" +
+                "userId='" + userId + '\'' +
+                ", activityId=" + activityId +
+                ", awardId='" + awardId + '\'' +
+                ", awardType=" + awardType +
+                ", awardName='" + awardName + '\'' +
+                ", awardContent='" + awardContent + '\'' +
+                ", strategyMode=" + strategyMode +
+                ", grantType=" + grantType +
+                ", grantDate=" + grantDate +
+                '}';
     }
 }

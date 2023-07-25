@@ -1,4 +1,4 @@
-package com.kkkoke.lottery.test;
+package com.kkkoke.lottery.test.application;
 
 import com.alibaba.fastjson.JSON;
 import com.kkkoke.lottery.application.process.IActivityProcess;

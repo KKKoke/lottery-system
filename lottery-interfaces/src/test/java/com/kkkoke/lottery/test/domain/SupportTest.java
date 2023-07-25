@@ -1,4 +1,4 @@
-package com.kkkoke.lottery.test;
+package com.kkkoke.lottery.test.domain;
 
 import com.kkkoke.lottery.common.Constants;
 import com.kkkoke.lottery.domain.support.ids.IIdGenerator;
