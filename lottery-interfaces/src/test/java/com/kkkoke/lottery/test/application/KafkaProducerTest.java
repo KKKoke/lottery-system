@@ -1,6 +1,8 @@
 package com.kkkoke.lottery.test.application;
 
-import com.kkkoke.lottery.application.mq.KafkaProducer;
+import com.kkkoke.lottery.application.mq.producer.KafkaProducer;
+import com.kkkoke.lottery.common.Constants;
+import com.kkkoke.lottery.domain.strategy.model.vo.InvoiceVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -26,10 +28,20 @@ public class KafkaProducerTest {
 
     @Test
     public void testSend() throws InterruptedException {
-        // 循环发送消息
-        while (true) {
-            kafkaProducer.send("你好，我是Lottery 001");
-            Thread.sleep(3500);
+        InvoiceVO invoice = new InvoiceVO();
+        invoice.setuId("kkkoke");
+        invoice.setOrderId(1444540456057864192L);
+        invoice.setAwardId("3");
+        invoice.setAwardType(Constants.AwardType.DESC.getCode());
+        invoice.setAwardName("Code");
+        invoice.setAwardContent("苹果电脑");
+        invoice.setShippingAddress(null);
+        invoice.setExtInfo(null);
+
+        kafkaProducer.sendLotteryInvoice(invoice);
+
+        while (true){
+            Thread.sleep(10000);
         }
     }
 }

@@ -17,6 +17,4 @@ public interface IDistributionGoods {
      * @return      配送结果
      */
     DistributionRes doDistribution(GoodsReq req);
-
-    Integer getDistributionGoodsName();
 }
