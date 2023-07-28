@@ -39,6 +39,20 @@ spring:
       ack-mode: manual_immediate
       missing-topics-fatal: false
 
+# xxl-job
+xxl:
+  job:
+    admin:
+      addresses: http://127.0.0.1:8090/xxl-job-admin
+    executor:
+      address:
+      appname: lottery-job
+      ip:
+      port: 9998
+      logpath: /Users/kkkoke/logs/xxl-job-log/
+      logretentiondays: 50
+    accessToken:
+
 # 多数据源路由配置
 easy-db-router:
   jdbc:
