@@ -1,5 +1,6 @@
 package com.kkkoke.lottery.domain.activity.repository;
 
+import com.kkkoke.lottery.domain.activity.model.vo.ActivityPartakeRecordVO;
 import com.kkkoke.lottery.domain.activity.model.vo.DrawOrderVO;
 import com.kkkoke.lottery.domain.activity.model.vo.UserTakeActivityVO;
 import com.kkkoke.lottery.domain.strategy.model.vo.InvoiceVO;
@@ -84,4 +85,11 @@ public interface IUserTakeActivityRepository {
      * @return 发货单
      */
     List<InvoiceVO> scanInvoiceMqState();
+
+    /**
+     * 更新活动库存
+     *
+     * @param activityPartakeRecordVO   活动领取记录
+     */
+    void updateActivityStock(ActivityPartakeRecordVO activityPartakeRecordVO);
 }

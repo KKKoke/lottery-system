@@ -3,7 +3,9 @@ package com.kkkoke.lottery.domain.activity.service.partake.impl;
 import com.kkkoke.lottery.common.Constants;
 import com.kkkoke.lottery.common.Result;
 import com.kkkoke.lottery.domain.activity.model.req.PartakeReq;
+import com.kkkoke.lottery.domain.activity.model.res.StockResult;
 import com.kkkoke.lottery.domain.activity.model.vo.ActivityBillVO;
+import com.kkkoke.lottery.domain.activity.model.vo.ActivityPartakeRecordVO;
 import com.kkkoke.lottery.domain.activity.model.vo.DrawOrderVO;
 import com.kkkoke.lottery.domain.activity.model.vo.UserTakeActivityVO;
 import com.kkkoke.lottery.domain.activity.repository.IUserTakeActivityRepository;
@@ -83,6 +85,16 @@ public class ActivityPartakeImpl extends BaseActivityPartake {
     }
 
     @Override
+    protected StockResult subtractionActivityStockByRedis(String uId, Long activityId, Integer stockCount) {
+        return activityRepository.subtractionActivityStockByRedis(uId, activityId, stockCount);
+    }
+
+    @Override
+    protected void recoverActivityCacheStockByRedis(Long activityId, String tokenKey, String code) {
+        activityRepository.recoverActivityCacheStockByRedis(activityId, tokenKey, code);
+    }
+
+    @Override
     protected Result grabActivity(PartakeReq partake, ActivityBillVO bill, Long takeId) {
         try {
             dbRouter.doRouter(partake.getuId());
@@ -158,5 +170,10 @@ public class ActivityPartakeImpl extends BaseActivityPartake {
         } finally {
             dbRouter.clear();
         }
+    }
+
+    @Override
+    public void updateActivityStock(ActivityPartakeRecordVO activityPartakeRecordVO) {
+        userTakeActivityRepository.updateActivityStock(activityPartakeRecordVO);
     }
 }

@@ -2,10 +2,14 @@ package com.kkkoke.lottery.infrastructure.repository;
 
 import com.kkkoke.lottery.common.Constants;
 import com.kkkoke.lottery.domain.activity.model.req.PartakeReq;
+import com.kkkoke.lottery.domain.activity.model.res.StockResult;
 import com.kkkoke.lottery.domain.activity.model.vo.*;
 import com.kkkoke.lottery.domain.activity.repository.IActivityRepository;
 import com.kkkoke.lottery.infrastructure.dao.*;
 import com.kkkoke.lottery.infrastructure.po.*;
+import com.kkkoke.lottery.infrastructure.util.RedisUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 
@@ -21,6 +25,8 @@ import java.util.List;
 @Repository
 public class ActivityRepository implements IActivityRepository {
 
+    private Logger logger = LoggerFactory.getLogger(ActivityRepository.class);
+
     @Resource
     private IActivityDao activityDao;
 
@@ -35,6 +41,9 @@ public class ActivityRepository implements IActivityRepository {
 
     @Resource
     private IUserTakeActivityCountDao userTakeActivityCountDao;
+
+    @Resource
+    private RedisUtil redisUtil;
 
     @Override
     public void addActivity(ActivityVO activity) {
@@ -74,7 +83,8 @@ public class ActivityRepository implements IActivityRepository {
 
     @Override
     public boolean alterStatus(Long activityId, Enum<Constants.ActivityState> beforeState, Enum<Constants.ActivityState> afterState) {
-        AlterStateVO alterStateVO = new AlterStateVO(activityId, ((Constants.ActivityState) beforeState).getCode(), ((Constants.ActivityState) afterState).getCode());
+        AlterStateVO alterStateVO = new AlterStateVO(activityId, ((Constants.ActivityState) beforeState).getCode(),
+                ((Constants.ActivityState) afterState).getCode());
         int count = activityDao.alterState(alterStateVO);
         return 1 == count;
     }
@@ -127,5 +137,39 @@ public class ActivityRepository implements IActivityRepository {
             activityVOList.add(activityVO);
         }
         return activityVOList;
+    }
+
+    @Override
+    public StockResult subtractionActivityStockByRedis(String uId, Long activityId, Integer stockCount) {
+        //  1. 获取抽奖活动库存 Key
+        String stockKey = Constants.RedisKey.KEY_LOTTERY_ACTIVITY_STOCK_COUNT(activityId);
+
+        // 2. 扣减库存，目前占用库存数
+        Integer stockUsedCount = (int) redisUtil.incr(stockKey, 1);
+
+        // 3. 超出库存判断，进行恢复原始库存
+        if (stockUsedCount > stockCount) {
+            redisUtil.decr(stockKey, 1);
+            return new StockResult(Constants.ResponseCode.OUT_OF_STOCK.getCode(), Constants.ResponseCode.OUT_OF_STOCK.getInfo());
+        }
+
+        // 4. 以活动库存占用编号，生成对应加锁Key，细化锁的颗粒度
+        String stockTokenKey = Constants.RedisKey.KEY_LOTTERY_ACTIVITY_STOCK_COUNT_TOKEN(activityId, stockUsedCount);
+
+        // 5. 使用 Redis.setNx 加一个分布式锁
+        boolean lockToken = redisUtil.setNx(stockTokenKey, 350L);
+        if (!lockToken) {
+            logger.info("抽奖活动{}用户秒杀{}扣减库存，分布式锁失败：{}", activityId, uId, stockTokenKey);
+            return new StockResult(Constants.ResponseCode.ERR_TOKEN.getCode(), Constants.ResponseCode.ERR_TOKEN.getInfo());
+        }
+
+        return new StockResult(Constants.ResponseCode.SUCCESS.getCode(), Constants.ResponseCode.SUCCESS.getInfo(),
+                stockTokenKey, stockCount - stockUsedCount);
+    }
+
+    @Override
+    public void recoverActivityCacheStockByRedis(Long activityId, String tokenKey, String code) {
+        // 删除分布式锁 Key
+        redisUtil.del(tokenKey);
     }
 }
